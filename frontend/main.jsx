@@ -10,7 +10,8 @@ const App = () => {
       .then(data => setMessage(data.message));
   }, []);
 
-  return <h1>{message || "Loading..."}</h1>;
+  return <h1>{message || "Desplegando con GitHub Actions..."}</h1>;
+
 }
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
