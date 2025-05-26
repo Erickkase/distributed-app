@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Add SSH key
@@ -21,8 +21,22 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            # Instalar Docker
+            sudo apt update
+            sudo apt install -y docker.io
+
+            # Instalar Docker Compose
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+
+            # Clonar el repositorio si no existe
+            if [ ! -d "distributed-app" ]; then
+              git clone https://github.com/Erickkase/distributed-app.git
+            fi
+
             cd distributed-app
             git pull origin main
+
             docker-compose down
             docker-compose up -d --build
           EOF
