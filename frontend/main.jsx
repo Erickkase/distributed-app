@@ -13,6 +13,4 @@ const App = () => {
   return <h1>{message || "Cargando desde el backend..."}</h1>;
 }
 
-}
-
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
